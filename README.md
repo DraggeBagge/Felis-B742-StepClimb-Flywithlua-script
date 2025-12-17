@@ -3,10 +3,10 @@ Flywithlua script that automates what is otherwise a manual stepclimb procedure 
 The script logic uses the same POH tables as those printed on the flight engineers station, including ISA deviation limitations. <br><br>
 
 # Bug reports
-Simply file an issue under the issues section of this repo and I or someone else will handle it in time
+Simply file an issue in the [issues section (click on me)](https://github.com/DraggeBagge/Felis-B742-StepClimb-Flywithlua-script/issues) of this repo and I or someone else will handle it in time
 
 # Instructions
-1.**Download script**
+1. **Download script**
    - [Download the latest release ,lua file (click on me)](https://github.com/DraggeBagge/Felis-B742-StepClimb-Flywithlua-script/releases)
      
 2. **Locate your X-Plane installation folder**  
