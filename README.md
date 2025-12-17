@@ -7,7 +7,8 @@ Simply file an issue under the issues section of this repo and I or someone else
 
 # Instructions
 1.**Download script**
-   - Download the latest release (click on me)  
+   - [Download the latest release ,lua file (click on me)](https://github.com/DraggeBagge/Felis-B742-StepClimb-Flywithlua-script/releases)
+     
 2. **Locate your X-Plane installation folder**  
    - Example paths:  
      - Windows: `C:\X-plane 12 (or 11)\`  
@@ -49,3 +50,7 @@ Simply file an issue under the issues section of this repo and I or someone else
 
 11. **(optional) Go to sleep or do the house chores...**  
    - ... and don't forget to check back on the plane prior to descent!
+
+# Thank you
+Many thanks to the following people that helped me get this script up and running through testing & advice:<br><br>
+_Felis, nuke, JulietAlphaSierra4, apn (.org), triplemon (.org), sirtoper (.org)_
