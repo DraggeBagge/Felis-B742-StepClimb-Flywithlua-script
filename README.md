@@ -42,13 +42,13 @@ Simply file an issue under the issues section of this repo and I or someone else
      
    - To sum the steps from above up... _be in initial cruise configuration_.  
 
-10. **Enable the script**  
-   - Chose between 085 and Long Range Cruise (LRC) modes
+9. **Enable the script**  
+   - Sekect between 085 and Long Range Cruise (LRC) modes. Leave it on 085 if you don't know what to select.
    - Click on "Enable script"<br>
      <img width="584" height="284" alt="image" src="https://github.com/user-attachments/assets/94c262bf-3a21-46b1-b2a1-1808d1fa251b" />
 
 
-11. **(optional) Go to sleep or do the house chores...**  
+10. **(optional) Go to sleep or do the house chores...**  
    - ... and don't forget to check back on the plane prior to descent!
 
 # Thank you
