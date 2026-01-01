@@ -51,7 +51,8 @@ Simply file an issue in the [issues section (click on me)](https://github.com/Dr
 10. **(optional) Go to sleep or do the house chores...**  
    - ... and don't forget to check back on the plane prior to descent!
      
-11. **Disable the script**
+11. **Disable the script...**
+   - ... once you are back to regain control!
 
 # Thank you
 Many thanks to the following people that helped me get this script up and running through testing & advice:<br><br>
