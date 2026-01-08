@@ -4,7 +4,8 @@
 -- Download link: https://github.com/DraggeBagge/Felis-B742-StepClimb-Flywithlua-script
 
 -- Version:
--- 1.0	2025-12-17	DRAGGEBAGGE
+--	1.0	2025-12-17	Initial uppload	//DRAGGEBAGGE
+--	1.1	2025-01-04	ISSUE #1 Account for airspeed loss during climb	//DRAGGEBAGGE
 -------------------------------------------------------------------------------------------------
 
 if not SUPPORTS_FLOATING_WINDOWS then
@@ -17,6 +18,8 @@ local delay_done = false
 
 -- Global variables - Sim
 selected_mode = "085"
+starting_mach = nil
+starting_mach_counter = 0
 
 -- Global variables - Menu
 script_enabled = false
@@ -136,9 +139,17 @@ end
 
 function step_climb(script_enabled_prm,on_ground_prm,oat_prm,selected_mode_prm,current_weight_prm,indicated_altitude_prm,magnetic_track_prm,at_mode_mach_btn_prm,ap_alt_prm,alt_sel_prm)
 	
-    if script_enabled_prm == false or on_ground_prm == 1 then return end
-	
+    if script_enabled_prm == false or on_ground_prm == 1 then 
+		starting_mach = nil
+		starting_mach_counter = 0
+		return
+	end
 	at_on_sw = 1 -- make sure AT is always on if script enabled because it disengages shortly during script use
+	
+	if starting_mach_counter == 0 then
+		starting_mach = current_mach
+		starting_mach_counter = 1
+	end
 	
 	local mode_key = selected_mode_prm
     if not mode_key or not weight_to_altitude_hash[mode_key] then
@@ -179,8 +190,9 @@ function step_climb(script_enabled_prm,on_ground_prm,oat_prm,selected_mode_prm,c
 		end
 	end
 	
-	if (limiting_altitude - 950) <= indicated_altitude_prm then
-		at_mode_mach_btn = 1 -- makes sure mach epr btn is set when not in climb in addition to not uneccesserly stepclimbing.
+	if (limiting_altitude - 850) <= indicated_altitude_prm then
+		if current_mach < starting_mach then -- will continue to speed up with EPR engaged.
+		else at_mode_mach_btn = 1 end -- makes sure mach epr btn is set when not in climb in addition to not uneccesserly stepclimbing.
 		return
 	end
 	
@@ -217,14 +229,15 @@ function wait_for_datarefs()
 			dataref("magnetic_track", "sim/flightmodel/position/mag_psi", "readonly")							-- Current magnetic track (for semicircle rule!)
 			dataref("current_weight", "sim/flightmodel/weight/m_total", "readonly")								-- Current gross weight
 			dataref("ap_alt",	"B742/AP_panel/altitude_set", "writable")										-- Current autopilot altitude
-			dataref("ap_pitch_mode_sel",	"B742/AP_panel/AP_pitch_mode_sel",				"writable")			-- AP Pitch mode selector setting -1 to 3, 3 is MACH
-			dataref("at_on_sw",	"B742/AP_panel/AT_on_sw",				"writable")							-- A/T off(0)/on(-1)
-			dataref("at_mode_mach_btn",	"B742/EPRL/mode_mach_button",				"writable")					-- A/T mode MACH
-			dataref("at_mode_epr_btn",	"B742/EPRL/mode_epr_button",				"writable")					-- A/T mode EPR
-			dataref("at_eprl_sel",	"B742/EPRL/eprl_mode_sel",				"writable")							-- EPRL setting 1 to 5, 4 is CRZ
-			dataref("alt_sel",	"B742/AP_panel/altitude_mode_sw",				"writable")						-- ALT SEL off(0)/on(-1) ALT hold (1)
-			dataref("air_cond_rotary",	"B742/AIR_COND/altitude_rotary",				"writable")							-- Air condition altitude rotary which sets air cond gaguge (AIR_COND/altitude_gauge)
-			dataref("at_rst_cpt",	"B742/AP_mode_panel/AT_RST_button",				"writable")		
+			dataref("ap_pitch_mode_sel",	"B742/AP_panel/AP_pitch_mode_sel",	"writable")						-- AP Pitch mode selector setting -1 to 3, 3 is MACH
+			dataref("at_on_sw",	"B742/AP_panel/AT_on_sw", "writable")											-- A/T off(0)/on(-1)
+			dataref("current_mach",	"sim/cockpit2/gauges/indicators/mach_pilot", "readonly")					-- MACH Indicated CPT side
+			dataref("at_mode_mach_btn",	"B742/EPRL/mode_mach_button", "writable")								-- A/T mode MACH
+			dataref("at_mode_epr_btn",	"B742/EPRL/mode_epr_button", "writable")								-- A/T mode EPR
+			dataref("at_eprl_sel",	"B742/EPRL/eprl_mode_sel", "writable")										-- EPRL setting 1 to 5, 4 is CRZ
+			dataref("alt_sel",	"B742/AP_panel/altitude_mode_sw", "writable")									-- ALT SEL off(0)/on(-1) ALT hold (1)
+			dataref("air_cond_rotary",	"B742/AIR_COND/altitude_rotary", "writable")							-- Air condition altitude rotary which sets air cond gaguge (AIR_COND/altitude_gauge)
+			dataref("at_rst_cpt",	"B742/AP_mode_panel/AT_RST_button", "writable")								-- Resets the A/T warning
 			
 			add_macro("DSC StepClimb B742 Felis", "toggle_stepclimb_menu()")
 			
