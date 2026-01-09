@@ -5,11 +5,13 @@
 
 -- Version:
 --	1.0	2025-12-17	Initial uppload	//DRAGGEBAGGE
---	1.1	2025-01-04	ISSUE #1 Account for airspeed loss during climb	//DRAGGEBAGGE
+--	1.1	2025-01-04	Added support for B743/B74S
+--					Fixed ISSUE #1 Account for airspeed loss during climb //DRAGGEBAGGE
+--
 -------------------------------------------------------------------------------------------------
 
 if not SUPPORTS_FLOATING_WINDOWS then
-    logMsg("DSC_StepClimb_B742_Felis: ImGui not supported by your FlyWithLua version")
+    logMsg("DSC_StepClimb_B742_Felis: ImGui not supported by your FlyWithLua version, please upgrade Flywithlua")
     return
 end
 local delay_start = os.clock()
@@ -206,7 +208,7 @@ function step_climb(script_enabled_prm,on_ground_prm,oat_prm,selected_mode_prm,c
 		ap_alt = limiting_altitude
         alt_sel = -1
 		at_mode_epr_btn = 1 
-		ap_pitch_mode_sel = 3 -- automatically switched to 0(off) byu aircraft when correct FL reached
+		ap_pitch_mode_sel = 3 -- automatically switched to 0(off) by aircraft when correct FL reached
 		at_on_sw = 1
         logMsg(string.format("DSC: Step climb triggered: Weight=%d, ISA Dev=%.1f, New FL=%d", current_weight_prm, dev, limiting_altitude/100))
 		
@@ -220,7 +222,7 @@ end
 function wait_for_datarefs()
 	if not delay_done and os.clock() - delay_start >= delay_duration then
 		delay_done = true
-		if (PLANE_ICAO == "B742") then
+		if (PLANE_ICAO == "B742") or (PLANE_ICAO == "B743") or (PLANE_ICAO ~= "B74S") then
 			
 			-- REQUIRED DATAREFS
 			dataref("on_ground", "sim/flightmodel/failures/onground_any", "readonly")							-- On ground check
